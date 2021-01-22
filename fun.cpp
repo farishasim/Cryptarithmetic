@@ -1,15 +1,35 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include <string>
-#include <time.h>
+#include <chrono> 
 #include <bits/stdc++.h>
 
 using namespace std;
 
+//****** GLOBAL VARIABLE ******//
 string CharValue;
-string operand[3];
-time_t start, endt;
+vector<string> operand;
+chrono::_V2::system_clock::time_point start, endt;
 
+//****** Time-related function ******//
+void StartTime() {
+    start = chrono::high_resolution_clock::now();
+}
+
+void EndTime() {
+    endt = chrono::high_resolution_clock::now(); 
+
+    double time_taken = chrono::duration_cast<chrono::nanoseconds>(endt - start).count(); 
+
+    time_taken *= 1e-9; 
+
+    cout << "Time taken by program is : " << fixed << time_taken << setprecision(9) ; 
+    cout << " sec " << endl; 
+}
+
+//****** Support Function ******//
 int getCharValue(char c) {
     return CharValue.find(c);
 }
@@ -43,17 +63,64 @@ int str2int(string str) {
     return val;
 }
 
-bool testSum() {
-    // simple-ver
-    return (str2int(operand[0]) + str2int(operand[1])) == str2int(operand[2]);
+string removePlus(string str) {
+    string output;
+    output.reserve(str.size()); 
+    for(size_t i = 0; i < str.size(); ++i)
+        if(str[i] != '+') output += str[i];
+    return output;
 }
 
+bool testSum() {
+    // simple-ver
+    int sum = 0, n = operand.size(), i;
+
+    for (i = 0; i < n-1; i++) {
+        sum += str2int(operand[i]);
+    }
+
+    return sum == str2int(operand[i]);
+}
+
+//****** I/O Function ******//
+void inputFile() {
+    ifstream infile("input.txt");
+    string line;
+
+    while (getline(infile, line)) {
+        operand.push_back(line);
+        if (line.find('+') != -1) {
+            operand[operand.size() - 1] = removePlus(operand[operand.size() - 1]);
+            getline(infile, line);
+        }
+    }
+}
+
+void printSolution() {
+    int i,n = operand.size();
+
+    cout << "-- QUESTION --";
+    for (i = 0; i < n-1; i++) {
+        cout << '\n' << (operand[i]);
+    }
+    cout << " +" << '\n' << "------\n";
+    cout << operand[i] << '\n';
+
+    cout << "\n-- ANSWER --";
+    for (i = 0; i < n-1; i++) {
+        cout << '\n' << str2int(operand[i]);
+    }
+    cout << " +" << '\n' << "------\n";
+    cout << str2int(operand[i]) << '\n';
+}
+
+//****** Solving Algorithm ******//
 bool solve(int idx_C, int idx_Ops) {
     char CC = operand[idx_Ops][idx_C];
 
     if (CC == '\0') 
     {
-        if (idx_Ops == 2) 
+        if (idx_Ops == operand.size()-1) 
         {
             return testSum(); // base-case
         } 
@@ -92,9 +159,11 @@ bool solve(int idx_C, int idx_Ops) {
             {
                 setCharValue(CC, i);
                 // cout << CharValue <<'\n' ;
-                solved = solve(idx_C+1, idx_Ops);
+                solved = solve(idx_C+1, idx_Ops); // after assign value to CC, 
+                                                  // proceed to next char recursively
+                
                 if (!solved) {
-                    dropCharValue(CC);
+                    dropCharValue(CC); // if next char failed, remove value from CC
                     // cout << CC << '\n';
                 }
             }
@@ -110,30 +179,24 @@ void setup() {
     //CharValue = "OMY00ENDRS";
 
     CharValue = "0000000000";
-    operand[0] = "SEND";
-    operand[1] = "MORE";
-    operand[2] = "MONEY";
+    inputFile();
 
-    time(&start);
+    StartTime();
 }
 
 void setdown() {
-    cout << CharValue << '\n';
+    printSolution();
     
-    time(&endt);
-
-    double time_taken = double(endt - start); 
-    cout << "Time taken by program is : " << fixed << time_taken << setprecision(5) ; 
-    cout << " sec " << endl; 
+    EndTime();
 }
 
 int main() {
-    
-    setup();
 
-    solve(0,0);
+    setup();
+  
+    solve(0,0); 
 
     setdown();
-
-    return 0;
+  
+    return 0; 
 }
