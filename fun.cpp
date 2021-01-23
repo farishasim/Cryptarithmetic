@@ -12,6 +12,7 @@ using namespace std;
 string CharValue;
 vector<string> operand;
 chrono::_V2::system_clock::time_point start, endt;
+int countf;
 
 //****** Time-related function ******//
 void StartTime() {
@@ -72,14 +73,19 @@ string removePlus(string str) {
 }
 
 bool testSum() {
-    // simple-ver
     int sum = 0, n = operand.size(), i;
 
     for (i = 0; i < n-1; i++) {
         sum += str2int(operand[i]);
     }
 
-    return sum == str2int(operand[i]);
+    bool solved = (sum == str2int(operand[i]));
+    
+    if (!solved) {
+        countf++;
+    }
+
+    return solved;
 }
 
 //****** I/O Function ******//
@@ -126,10 +132,10 @@ bool solve(int idx_C, int idx_Ops) {
         } 
         else 
         {
-            return solve(0, idx_Ops+1); // recurence-case, go to next operand
+            return solve(0, idx_Ops+1); // recurrence-case, go to next operand
         }
     } 
-    // recurence-case
+    // recurrence-case
     else if (hasCharValue(CC))
     {
         if ((idx_C == 0) && (getCharValue(CC) == 0)) {
@@ -158,13 +164,11 @@ bool solve(int idx_C, int idx_Ops) {
             else 
             {
                 setCharValue(CC, i);
-                // cout << CharValue <<'\n' ;
                 solved = solve(idx_C+1, idx_Ops); // after assign value to CC, 
                                                   // proceed to next char recursively
                 
                 if (!solved) {
                     dropCharValue(CC); // if next char failed, remove value from CC
-                    // cout << CC << '\n';
                 }
             }
             i++;
@@ -174,11 +178,11 @@ bool solve(int idx_C, int idx_Ops) {
     }
 }
 
+//****** Setup Function ******//
 void setup() {
-    // simple-ver
-    //CharValue = "OMY00ENDRS";
-
     CharValue = "0000000000";
+    countf = 0;
+
     inputFile();
 
     StartTime();
@@ -188,8 +192,11 @@ void setdown() {
     printSolution();
     
     EndTime();
+
+    cout << "Number of tests tried is : " << countf << " times\n";
 }
 
+//****** Main Program ******//
 int main() {
 
     setup();
