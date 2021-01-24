@@ -1,8 +1,13 @@
+// I/O library
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+// dynamic array and string library 
 #include <vector>
 #include <string>
+
+// time-related library
 #include <chrono> 
 #include <bits/stdc++.h>
 
@@ -13,6 +18,7 @@ string CharValue;
 vector<string> operand;
 chrono::_V2::system_clock::time_point start, endt;
 int countf;
+bool solvable;
 
 //****** Time-related function ******//
 void StartTime() {
@@ -32,10 +38,15 @@ void EndTime() {
 
 //****** Support Function ******//
 int getCharValue(char c) {
+    // return a character value that stored in string CharValue
+    // a character with value i will be stored in string CharValue at index i
+    // example : CharValue "SFD000A0P" means the value of S is 0, D is 2, etc
     return CharValue.find(c);
 }
 
 void setCharValue(char c, int i) {
+    // set a character c to value i
+    // char c will be stored in string CharValue at index i
     CharValue[i] = c;
 }
 
@@ -178,6 +189,10 @@ bool solve(int idx_C, int idx_Ops) {
     }
 }
 
+void solve() {
+    solvable = solve(0,0);
+}
+
 //****** Setup Function ******//
 void setup() {
     CharValue = "0000000000";
@@ -189,7 +204,11 @@ void setup() {
 }
 
 void setdown() {
-    printSolution();
+    if (solvable) {
+        printSolution();
+    } else {
+        cout << "No Solution exist.\n";
+    }
     
     EndTime();
 
@@ -201,7 +220,7 @@ int main() {
 
     setup();
   
-    solve(0,0); 
+    solve(); 
 
     setdown();
   
