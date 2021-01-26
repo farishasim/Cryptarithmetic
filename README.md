@@ -7,7 +7,7 @@ Cryptarithmetic (atau cryptarithm) adalah sebuah puzzle penjumlahan di dalam mat
 Deskripsi permainan ini adalah: diberikan sebuah penjumlahan huruf, carilah angka yang merepresentasikan huruf-huruf tersebut.
 
 Contoh :
-
+![contoh cryptarithm](/zzz/contoh.png)
 
 Program ini akan menyelesaikan sebuah persoalan cryptarithmetic dengan menggunakan pendekatan algoritma brute force.
 
@@ -21,7 +21,7 @@ git clone https://github.com/farishasim/Cryptarithmetic.git
 ```
 g++ -o bin/fun src/fun.cpp
 ```
-atau
+    atau
 ```
 g++ -std=c++11 -o bin/fun src/fun.cpp
 ```
@@ -36,6 +36,6 @@ g++ -std=c++11 -o bin/fun src/fun.cpp
 
 ## Author
 
-[Faris Hasim - 13519050](https://github.com/farishasim)
+[Faris Hasim Syauqi - 13519050](https://github.com/farishasim)
 
 📌 Bandung, Indonesia
