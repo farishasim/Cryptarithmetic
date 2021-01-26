@@ -101,7 +101,14 @@ bool testSum() {
 
 //****** I/O Function ******//
 void inputFile() {
-    ifstream infile("input.txt");
+    string filename;
+
+    cout << "Your input file name: ";
+    cin >> filename;
+
+    filename = "../test/" + filename;
+
+    ifstream infile(filename);
     string line;
 
     while (getline(infile, line)) {
